@@ -1,0 +1,504 @@
+:root {
+  --nppt-overlay: rgba(4, 10, 24, 0.34);
+  --nppt-shell-bg: rgba(6, 10, 20, 0.32);
+  --nppt-card-bg: rgba(255, 255, 255, 0.72);
+  --nppt-card-bg-strong: rgba(255, 255, 255, 0.82);
+  --nppt-card-border: rgba(148, 163, 184, 0.18);
+  --nppt-text: #f8fafc;
+  --nppt-muted: rgba(203, 213, 225, 0.8);
+  --nppt-primary: #38bdf8;
+  --nppt-primary-strong: #0ea5e9;
+  --nppt-ink: #0f172a;
+  --nppt-ink-soft: #334155;
+  --nppt-radius: 15px;
+  --nppt-shadow: 0 24px 70px rgba(2, 6, 23, 0.18);
+}
+
+body[data-nppt-has-focus='true'] .nppt-focus-target {
+  position: relative;
+  z-index: 40;
+  border-radius: var(--nppt-radius);
+  box-shadow: 0 0 0 9999px var(--nppt-overlay);
+}
+
+body[data-nppt-role='presenter'] .nppt-focus-target {
+  outline: 2px solid rgba(56, 189, 248, 0.9);
+  outline-offset: 8px;
+}
+
+body[data-nppt-role='viewer'] .nppt-focus-target {
+  outline: none;
+}
+
+.nppt-presenter {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  color: var(--nppt-text);
+  font-family: sans-serif;
+}
+
+.nppt-presenter__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.1), transparent 24%),
+    var(--nppt-shell-bg);
+  backdrop-filter: blur(18px) saturate(130%);
+}
+
+.nppt-presenter__shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(320px, 420px);
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  padding: 18px;
+  width: 100%;
+  height: 100dvh;
+  box-sizing: border-box;
+}
+
+.nppt-card,
+.nppt-launcher {
+  pointer-events: auto;
+}
+
+.nppt-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 5px;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--nppt-card-border);
+  border-radius: var(--nppt-radius);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.82)),
+    var(--nppt-card-bg);
+  box-shadow: var(--nppt-shadow);
+  backdrop-filter: blur(20px);
+}
+
+.nppt-card--hero {
+  grid-column: 1 / span 2;
+  padding: 15px;
+}
+
+.nppt-card--keywords {
+  grid-column: 1 / span 3;
+  padding: 15px;
+}
+
+.nppt-card--preview {
+  grid-column: 3;
+  grid-row: 1;
+  padding: 15px;
+}
+
+.nppt-side-stack {
+  grid-column: 3;
+  grid-row: 2;
+  min-height: 0;
+}
+
+.nppt-card--facts {
+  height: 100%;
+}
+
+.nppt-card__header {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.nppt-card__body {
+  display: grid;
+  gap: 12px;
+  min-height: 0;
+}
+
+.nppt-card__eyebrow {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nppt-card__caption {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.nppt-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nppt-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(241, 245, 249, 0.92);
+  color: #475569;
+  font-size: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.nppt-hero-copy {
+  display: grid;
+}
+
+.nppt-hero-copy__title {
+  margin: 0;
+  font-size: clamp(24px, 4vw, 48px);
+  line-height: 0.98;
+  color: var(--nppt-ink);
+}
+
+.nppt-hero-copy__note {
+  margin: 0;
+  color: var(--nppt-ink-soft);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.7;
+}
+
+.nppt-key-actions {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.nppt-button,
+.nppt-launcher {
+  appearance: none;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 16px;
+  padding: 13px 16px;
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--nppt-ink);
+  cursor: pointer;
+  font: inherit;
+  transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+
+.nppt-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.14);
+}
+
+.nppt-button--primary {
+  background: linear-gradient(135deg, rgba(186, 230, 253, 0.95), rgba(125, 211, 252, 0.92));
+  border-color: rgba(14, 165, 233, 0.18);
+}
+
+.nppt-help-line {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+/* Container style board */
+.nppt-keyword-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  height: 100%;
+  align-content: flex-start;
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+/* Badge clean */
+.nppt-keyword-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 4px solid rgba(148, 163, 184, 0.2);
+  background: #ffe6a1;
+  color: #0f172a;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+/* Sizes plus équilibrées */
+.nppt-keyword-badge[data-size='sm'] {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.nppt-keyword-badge[data-size='md'] {
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.nppt-keyword-badge[data-size='lg'] {
+  padding: 10px 16px;
+  font-size: 16px;
+}
+
+.nppt-keyword-badge[data-size='xl'] {
+  padding: 12px 18px;
+  font-size: 18px;
+}
+
+/* Tons version dashboard (plus soft) */
+.nppt-keyword-badge[data-tone='info'] {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.nppt-keyword-badge[data-tone='success'] {
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+.nppt-keyword-badge[data-tone='warning'] {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.nppt-keyword-badge[data-tone='danger'] {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.nppt-preview {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.98));
+}
+
+.nppt-preview__screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.nppt-preview__iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  background: white;
+  pointer-events: none;
+}
+
+.nppt-facts {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 20px;
+}
+
+.nppt-fact {
+  display: grid;
+  gap: 4px;
+}
+
+.nppt-fact dt {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nppt-fact dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--nppt-ink);
+}
+
+.nppt-launcher {
+  color: var(--nppt-ink);
+}
+
+/* Animation flottante douce */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0px); }
+}
+
+.nppt-floating-launcher {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 95;
+  display: grid;
+  gap: 4px;
+  min-width: 240px;
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border-radius: 18px;
+
+  border: 1px solid rgba(148, 163, 184, 0.2);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(241, 245, 249, 0.9)
+  );
+
+  color: var(--nppt-ink);
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  backdrop-filter: blur(18px);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Hover moderne */
+.nppt-floating-launcher:hover {
+  transform: translateY(-6px) scale(1.03) rotate(-2deg);
+
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.2),
+    0 0 0 4px rgba(59, 130, 246, 0.08);
+
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+/* Effet "click" */
+.nppt-floating-launcher:active {
+  transform: scale(0.97);
+}
+
+/* Petit effet lumineux animé */
+.nppt-floating-launcher::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nppt-floating-launcher:hover::before {
+  opacity: 1;
+}
+
+/* Texte */
+.nppt-floating-launcher__title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.nppt-floating-launcher__meta {
+  color: #64748b;
+  font-size: 12px;
+  word-break: break-word;
+}
+
+@media (max-width: 1320px) {
+  .nppt-presenter__shell {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .nppt-card--hero,
+  .nppt-card--keywords {
+    grid-column: 1;
+  }
+
+  .nppt-card--preview {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .nppt-side-stack {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 960px) {
+  .nppt-presenter__shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(280px, 42vh) auto;
+    overflow: auto;
+    height: 100dvh;
+  }
+
+  .nppt-card--hero,
+  .nppt-card--keywords,
+  .nppt-card--preview,
+  .nppt-side-stack {
+    grid-column: 1;
+  }
+
+  .nppt-card--preview {
+    grid-row: auto;
+    min-height: 320px;
+  }
+
+  .nppt-side-stack {
+    grid-row: auto;
+  }
+
+  .nppt-key-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nppt-keyword-cloud {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .nppt-presenter__shell {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .nppt-card--hero,
+  .nppt-card--keywords,
+  .nppt-card--preview {
+    padding: 16px;
+  }
+
+  .nppt-hero-copy__title {
+    font-size: 24px;
+  }
+
+  .nppt-keyword-cloud {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
