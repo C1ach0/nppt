@@ -66,3 +66,22 @@ export type NpptKeyword = {
   tone: NpptKeywordTone
   size: NpptKeywordSize
 }
+
+export type NpptApi = {
+  state: NpptState
+  role: Role
+  isActive: boolean
+  isPresenter: boolean
+  canPresent: boolean
+  debug: NpptDebugState
+  refreshDomVisibility: () => void
+  syncFromPresenter: () => void
+  navigate: (to: string, step?: number) => Promise<void>
+  next: () => void
+  prev: () => void
+  nextPage: () => Promise<void>
+  prevPage: () => Promise<void>
+  goTo: (step: number) => void
+  resetFocus: () => void
+  launchPresentation: () => Promise<void>
+}

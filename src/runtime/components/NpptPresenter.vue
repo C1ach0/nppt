@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="$nppt.isPresenter" class="nppt-presenter">
+  <aside v-if="nppt.isPresenter" class="nppt-presenter">
     <div class="nppt-presenter__backdrop" />
 
     <div class="nppt-presenter__shell">
@@ -8,37 +8,37 @@
           <div class="nppt-card__eyebrow">Presenter View</div>
           <div class="nppt-chip-row">
             <span class="nppt-chip">Time: {{ elapsedTime }}</span>
-            <span class="nppt-chip">Step: {{ $nppt.state.step }} / {{ $nppt.state.maxStep }}</span>
-            <span class="nppt-chip">Active: {{ $nppt.state.activeStepCount }}</span>
-            <span class="nppt-chip">Path: {{ $nppt.state.currentPath }}</span>
+            <span class="nppt-chip">Step: {{ nppt.state.step }} / {{ nppt.state.maxStep }}</span>
+            <span class="nppt-chip">Active: {{ nppt.state.activeStepCount }}</span>
+            <span class="nppt-chip">Path: {{ nppt.state.currentPath }}</span>
           </div>
         </div>
 
         <div class="nppt-card__body">
           <div class="nppt-hero-copy">
             <h1 class="nppt-hero-copy__title">
-              {{ $nppt.state.activeTitle || 'Current focus' }}
+              {{ nppt.state.activeTitle || 'Current focus' }}
             </h1>
 
             <p class="nppt-hero-copy__note">
-              {{ $nppt.state.activeNote || 'Add data-nppt-note on a step to display speaker notes here.' }}
+              {{ nppt.state.activeNote || 'Add data-nppt-note on a step to display speaker notes here.' }}
             </p>
           </div>
 
           <div class="nppt-key-actions">
-            <button class="nppt-button" @click="$nppt.resetFocus()">
+            <button class="nppt-button" @click="nppt.resetFocus()">
               Reset
             </button>
-            <button class="nppt-button" @click="$nppt.prev()">
+            <button class="nppt-button" @click="nppt.prev()">
               Prev step
             </button>
-            <button class="nppt-button" @click="$nppt.next()">
+            <button class="nppt-button" @click="nppt.next()">
               Next step
             </button>
-            <button class="nppt-button" @click="$nppt.prevPage()">
+            <button class="nppt-button" @click="nppt.prevPage()">
               Prev page
             </button>
-            <button class="nppt-button" @click="$nppt.nextPage()">
+            <button class="nppt-button" @click="nppt.nextPage()">
               Next page
             </button>
           </div>
@@ -59,7 +59,7 @@
 
         <div class="nppt-keyword-cloud">
           <span
-            v-for="(keyword, index) in $nppt.state.keywords"
+            v-for="(keyword, index) in nppt.state.keywords"
             :key="`${keyword.label}-${keyword.tone}-${keyword.size}-${index}`"
             class="nppt-keyword-badge"
             :data-tone="keyword.tone"
@@ -96,9 +96,9 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useNuxtApp } from '#app'
+import { useNppt } from '../nppt.api'
 
-const { $nppt } = useNuxtApp()
+const nppt = useNppt()
 
 const previewFrameRef = ref<HTMLElement | null>(null)
 const previewScale = ref(0.25)
@@ -108,11 +108,12 @@ const previewViewport = {
   height: 900,
 }
 
-const cloudRotations = [-7, -4, -2, 2, 5, 7, -5, 4, -3, 3]
-const cloudColumns = ['span 3', 'span 4', 'span 5', 'span 3', 'span 4', 'span 5']
-
 const viewerPreviewUrl = computed(() => {
-  const url = new URL($nppt.state.currentPath || '/', window.location.origin)
+  if (!import.meta.client) {
+    return '/'
+  }
+
+  const url = new URL(nppt.state.currentPath || '/', window.location.origin)
   url.searchParams.set('role', 'viewer')
   return `${url.pathname}${url.search}${url.hash}`
 })
@@ -170,7 +171,7 @@ onMounted(() => {
 })
 
 watch(
-  () => $nppt.state.currentPath,
+  () => nppt.state.currentPath,
   async () => {
     await nextTick()
     updatePreviewScale()

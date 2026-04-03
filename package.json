@@ -1,9 +1,20 @@
 {
-  "name": "nppt",
+  "name": "@c1ach0/nppt",
   "version": "1.0.0",
-  "description": "My new Nuxt module",
-  "repository": "your-org/my-module",
+  "description": "Nuxt Presentation Tools: turn regular Nuxt pages into synchronized viewer and presenter experiences.",
   "license": "MIT",
+  "author": {
+    "name": "Maxence Bessi",
+    "url": "https://maxence-bessi.com"
+  },
+  "homepage": "https://nppt.maxence-bessi.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/C1ach0/nppt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/C1ach0/nppt/issues"
+  },
   "type": "module",
   "exports": {
     ".": {
@@ -23,7 +34,12 @@
     "dist"
   ],
   "workspaces": [
-    "playground"
+    "nuxt",
+    "nuxt-module",
+    "presentation",
+    "slides",
+    "presenter-view",
+    "viewer-mode"
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",

@@ -16,10 +16,7 @@ export default defineNuxtModule<ModuleOptions>({
     // addPlugin(resolver.resolve('./runtime/plugin'))
     _nuxt.options.css.push(resolver.resolve('./runtime/styles/nppt.css'))
 
-    addPlugin({
-      src: resolver.resolve('./runtime/plugin.client'),
-      mode: 'client'
-    })
+    addPlugin(resolver.resolve('./runtime/plugin'))
 
     addComponent({
       name: 'NpptPresenter',
@@ -29,6 +26,21 @@ export default defineNuxtModule<ModuleOptions>({
     addComponent({
       name: 'NpptLauncher',
       filePath: resolver.resolve('./runtime/components/NpptLauncher.vue'),
+    })
+
+    addComponent({
+      name: 'NpptShowOnPresentation',
+      filePath: resolver.resolve('./runtime/components/NpptShowOnPresentation.vue'),
+    })
+
+    addComponent({
+      name: 'NpptHideOnPresentation',
+      filePath: resolver.resolve('./runtime/components/NpptHideOnPresentation.vue'),
+    })
+
+    addComponent({
+      name: 'NpptProgress',
+      filePath: resolver.resolve('./runtime/components/NpptProgress.vue'),
     })
 
     addTypeTemplate({
@@ -47,6 +59,80 @@ export default defineNuxtModule<ModuleOptions>({
         size?: 'sm' | 'md' | 'lg' | 'xl'
       }>
     }
+  }
+}
+
+export {}
+`,
+    })
+
+    addTypeTemplate({
+      filename: 'types/nppt-runtime.d.ts',
+      getContents: () => `type NpptRole = 'presenter' | 'viewer' | 'inactive'
+
+type NpptKeywordTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+type NpptKeywordSize = 'sm' | 'md' | 'lg' | 'xl'
+
+type NpptKeyword = {
+  label: string
+  tone: NpptKeywordTone
+  size: NpptKeywordSize
+}
+
+type NpptDebugEntry = {
+  direction: 'send' | 'receive'
+  type: 'SET_STEP' | 'NAVIGATE' | 'REQUEST_STATE'
+  from: string
+  step: number
+  at: string
+}
+
+type NpptDebugState = {
+  clientId: string
+  role: NpptRole
+  lastAction: NpptDebugEntry | null
+  history: NpptDebugEntry[]
+}
+
+type NpptState = {
+  step: number
+  currentPath: string
+  activeStepCount: number
+  maxStep: number
+  activeTitle: string
+  activeNote: string
+  nextPath: string | null
+  keywords: NpptKeyword[]
+}
+
+type NpptApi = {
+  readonly state: NpptState
+  readonly role: NpptRole
+  readonly isActive: boolean
+  readonly isPresenter: boolean
+  readonly canPresent: boolean
+  readonly debug: NpptDebugState
+  refreshDomVisibility: () => void
+  syncFromPresenter: () => void
+  navigate: (to: string, step?: number) => Promise<void>
+  next: () => void
+  prev: () => void
+  nextPage: () => Promise<void>
+  prevPage: () => Promise<void>
+  goTo: (step: number) => void
+  resetFocus: () => void
+  launchPresentation: () => Promise<void>
+}
+
+declare module '#app' {
+  interface NuxtApp {
+    $nppt: NpptApi
+  }
+}
+
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $nppt: NpptApi
   }
 }
 

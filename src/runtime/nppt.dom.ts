@@ -197,20 +197,23 @@ export function scrollActiveStepIntoView() {
 
   const rect = activeElement.getBoundingClientRect()
   const viewportHeight = window.innerHeight
-  const topMargin = 24
-  const bottomMargin = 24
-  const isComfortablyVisible =
-    rect.top >= topMargin && rect.bottom <= viewportHeight - bottomMargin
+  const targetTop = viewportHeight * 0.5
+  const currentScroll = window.scrollY
+  const absoluteTop = currentScroll + rect.top
+  const desiredScrollTop = absoluteTop - targetTop
+  const maxScrollTop = Math.max(
+    document.documentElement.scrollHeight - viewportHeight,
+    0,
+  )
+  const nextScrollTop = Math.min(Math.max(desiredScrollTop, 0), maxScrollTop)
+  const distance = Math.abs(nextScrollTop - currentScroll)
 
-  if (isComfortablyVisible) {
+  if (distance < 8) {
     return
   }
 
-  const block = rect.height > viewportHeight * 0.6 ? 'start' : 'center'
-
-  activeElement.scrollIntoView({
+  window.scrollTo({
+    top: nextScrollTop,
     behavior: 'smooth',
-    block,
-    inline: 'nearest',
   })
 }

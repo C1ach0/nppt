@@ -43,6 +43,42 @@ function setOptionalDataAttribute(element: HTMLElement, key: string, value?: str
   element.dataset[key] = String(value)
 }
 
+function getNpptDataAttributes(value?: NpptBindingValue | null) {
+  if (!value) {
+    return {}
+  }
+
+  const attributes: Record<string, string> = {}
+
+  if (value.step !== undefined) {
+    attributes['data-nppt-step'] = String(value.step)
+  }
+
+  if (value.title) {
+    attributes['data-nppt-title'] = value.title
+  }
+
+  if (value.note) {
+    attributes['data-nppt-note'] = value.note
+  }
+
+  if (value.next) {
+    attributes['data-nppt-next'] = value.next
+  }
+
+  if (value.hideOn) {
+    attributes['data-nppt-hide-on'] = value.hideOn
+  }
+
+  const serializedKeywords = serializeKeywords(value.keywords)
+
+  if (serializedKeywords) {
+    attributes['data-nppt-keywords'] = serializedKeywords
+  }
+
+  return attributes
+}
+
 export function applyNpptBinding(element: HTMLElement, value?: NpptBindingValue | null) {
   if (!value) {
     return
@@ -62,5 +98,8 @@ export const npptDirective: ObjectDirective<HTMLElement, NpptBindingValue> = {
   },
   updated(element, binding) {
     applyNpptBinding(element, binding.value)
+  },
+  getSSRProps(binding) {
+    return getNpptDataAttributes(binding.value)
   },
 }

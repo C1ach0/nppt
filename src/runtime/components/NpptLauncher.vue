@@ -1,6 +1,22 @@
+<script setup lang="ts">
+import { useNppt } from '../nppt.api'
+
+const props = withDefaults(defineProps<{
+  label?: string
+}>(), {
+  label: 'Start presentation',
+})
+
+const nppt = useNppt()
+
+async function handleLaunch() {
+  await nppt.launchPresentation()
+}
+</script>
+
 <template>
   <button
-    v-if="!$nppt.isActive"
+    v-if="!nppt.isActive && nppt.canPresent"
     class="nppt-launcher"
     type="button"
     @click="handleLaunch"
@@ -8,19 +24,3 @@
     {{ label }}
   </button>
 </template>
-
-<script setup lang="ts">
-import { useNuxtApp } from '#app'
-
-const props = withDefaults(defineProps<{
-  label?: string
-}>(), {
-  label: 'Demarrer la presentation',
-})
-
-const { $nppt } = useNuxtApp()
-
-async function handleLaunch() {
-  await $nppt.launchPresentation()
-}
-</script>
