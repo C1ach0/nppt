@@ -39,6 +39,16 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     addComponent({
+      name: 'NpptViewerOnly',
+      filePath: resolver.resolve('./runtime/components/NpptViewerOnly.vue'),
+    })
+
+    addComponent({
+      name: 'NpptPresenterOnly',
+      filePath: resolver.resolve('./runtime/components/NpptPresenterOnly.vue'),
+    })
+
+    addComponent({
       name: 'NpptProgress',
       filePath: resolver.resolve('./runtime/components/NpptProgress.vue'),
     })

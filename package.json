@@ -1,6 +1,6 @@
 {
   "name": "@c1ach0/nppt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Nuxt Presentation Tools: turn regular Nuxt pages into synchronized viewer and presenter experiences.",
   "license": "MIT",
   "author": {

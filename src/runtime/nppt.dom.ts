@@ -197,10 +197,11 @@ export function scrollActiveStepIntoView() {
 
   const rect = activeElement.getBoundingClientRect()
   const viewportHeight = window.innerHeight
-  const targetTop = viewportHeight * 0.5
   const currentScroll = window.scrollY
   const absoluteTop = currentScroll + rect.top
-  const desiredScrollTop = absoluteTop - targetTop
+  const elementCenter = absoluteTop + rect.height / 2
+  const viewportCenter = viewportHeight / 2
+  const desiredScrollTop = elementCenter - viewportCenter
   const maxScrollTop = Math.max(
     document.documentElement.scrollHeight - viewportHeight,
     0,
