@@ -1,5 +1,9 @@
 # NPPT
 
+[![npm version](https://img.shields.io/npm/v/@c1ach0/nppt.svg)](https://www.npmjs.com/package/@c1ach0/nppt)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 NPPT is a Nuxt module that adds a presentation layer to existing pages.
 
 The idea is simple:
@@ -37,20 +41,14 @@ Outside presentation mode, your site should remain a normal site.
 ## Installation
 
 ```bash
-npx nuxi module add nppt
-```
-
-Or install it manually:
-
-```bash
-npm install nppt
+npm install @c1ach0/nppt
 ```
 
 Then enable the module in your Nuxt config:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['nppt'],
+  modules: ['@c1ach0/nppt'],
 })
 ```
 
